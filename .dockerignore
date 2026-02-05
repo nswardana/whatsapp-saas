@@ -1,0 +1,13 @@
+.git
+.gitignore
+README.md
+INSTALLATION.md
+.env.example
+test-api.sh
+docker-compose.yml
+.vscode
+.idea
+node_modules
+npm-debug.log
+.DS_Store
+*.md
