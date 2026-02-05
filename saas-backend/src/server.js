@@ -938,6 +938,15 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 3000;
 
+process.on('uncaughtException', (err) => {
+  console.error('🔥 UNCAUGHT EXCEPTION:', err);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('🔥 UNHANDLED REJECTION:', reason);
+});
+
+
 app.listen(PORT, () => {
     console.log('========================================');
     console.log(`🚀 WhatsApp SaaS API Server Started`);
@@ -959,10 +968,3 @@ process.on('SIGINT', async () => {
     process.exit(0);
 });
 
-process.on('uncaughtException', (err) => {
-  console.error('🔥 UNCAUGHT EXCEPTION:', err);
-});
-
-process.on('unhandledRejection', (reason, promise) => {
-  console.error('🔥 UNHANDLED REJECTION:', reason);
-});
