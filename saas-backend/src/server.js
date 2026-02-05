@@ -19,7 +19,8 @@ const {
 
 const app = express();
 
-app.set('trust proxy', true);
+// Trust only the first proxy (nginx)
+app.set('trust proxy', 1);
 
 // Middleware
 app.use(helmet());
@@ -35,21 +36,22 @@ app.use((req, res, next) => {
   })
   next()
 })
-// Rate limiters
 const apiLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 100,
-    message: { success: false, error: 'Too many requests, please try again later' },
-    standardHeaders: true,
-    legacyHeaders: false,
-    keyGenerator: (req) => req.user?.id || req.ip
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+  keyGenerator: (req) => req.ip
 });
 
 const authLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 5,
-    message: { success: false, error: 'Too many login attempts, please try again later' }
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+  keyGenerator: (req) => req.ip
 });
+
 
 // ========================================
 // HEALTH CHECK
