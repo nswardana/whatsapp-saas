@@ -1,6 +1,6 @@
 #!/bin/bash
 
-API_URL="http://localhost/api"
+API_URL="https://evolution-api.beeasy.id/api"
 
 echo "========================================="
 echo "Testing WhatsApp SaaS API"
