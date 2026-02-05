@@ -5,7 +5,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 const axios = require('axios');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 const pool = require('./config/database');
 const { getNextServer, EVOLUTION_API_KEY } = require('./config/evolution');
@@ -72,6 +72,7 @@ app.get('/health', (req, res) => {
 // ========================================
 
 // Register
+
 app.post('/auth/register', authLimiter, async (req, res) => {
     const { email, password, full_name, company_name, plan_type } = req.body;
     
@@ -91,14 +92,9 @@ app.post('/auth/register', authLimiter, async (req, res) => {
     
     try {
         
-       // const password_hash = await bcrypt.hash(password, 10);
+        const password_hash = await bcrypt.hash(password, 10);
         const api_key = generateApiKey();
         
-        return res.status(400).json({ 
-            success: false,
-            error: 'Password'+ "API_KEY"+api_key 
-        });
-    /*
         let maxPhones = 3;
         let maxMessages = 1000;
         
@@ -140,7 +136,6 @@ app.post('/auth/register', authLimiter, async (req, res) => {
                 created_at: result.rows[0].created_at
             }
         });
-        */
         
     } catch (error) {
         console.error('Register error:', error);
