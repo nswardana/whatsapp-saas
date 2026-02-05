@@ -90,9 +90,15 @@ app.post('/auth/register', authLimiter, async (req, res) => {
     }
     
     try {
-        const password_hash = await bcrypt.hash(password, 10);
+        
+       // const password_hash = await bcrypt.hash(password, 10);
         const api_key = generateApiKey();
         
+        return res.status(400).json({ 
+            success: false,
+            error: 'Password'+ "API_KEY"+api_key 
+        });
+    /*
         let maxPhones = 3;
         let maxMessages = 1000;
         
@@ -103,12 +109,7 @@ app.post('/auth/register', authLimiter, async (req, res) => {
             maxPhones = 50;
             maxMessages = 50000;
         }
-        return res.status(400).json({ 
-            success: false,
-            error: 'Password'+ password_hash + "API_KEY"+api_key 
-        });
-
-        /*
+        
         const result = await pool.query(
             `INSERT INTO users 
              (email, password_hash, api_key, full_name, company_name, plan_type, max_phone_numbers, max_messages_per_day)
