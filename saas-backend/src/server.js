@@ -69,7 +69,7 @@ app.get('/health', (req, res) => {
 // ========================================
 
 // Register
-app.post('/api/auth/register', authLimiter, async (req, res) => {
+app.post('/auth/register', authLimiter, async (req, res) => {
     const { email, password, full_name, company_name, plan_type } = req.body;
     
     if (!email || !password) {
@@ -150,7 +150,7 @@ app.post('/api/auth/register', authLimiter, async (req, res) => {
 });
 
 // Login
-app.post('/api/auth/login', authLimiter, async (req, res) => {
+app.post('/auth/login', authLimiter, async (req, res) => {
     const { email, password } = req.body;
     
     if (!email || !password) {
@@ -220,7 +220,7 @@ app.post('/api/auth/login', authLimiter, async (req, res) => {
 });
 
 // Get Profile
-app.get('/api/user/profile', authenticateUser, async (req, res) => {
+app.get('/user/profile', authenticateUser, async (req, res) => {
     try {
         const result = await pool.query(
             `SELECT * FROM user_dashboard WHERE id = $1`,
@@ -246,7 +246,7 @@ app.get('/api/user/profile', authenticateUser, async (req, res) => {
 // ========================================
 
 // Create Phone Number
-app.post('/api/phone-numbers/create', authenticateUser, apiLimiter, async (req, res) => {
+app.post('/phone-numbers/create', authenticateUser, apiLimiter, async (req, res) => {
     const { display_name, webhook_url } = req.body;
     
     try {
@@ -335,7 +335,7 @@ app.post('/api/phone-numbers/create', authenticateUser, apiLimiter, async (req, 
 });
 
 // List Phone Numbers
-app.get('/api/phone-numbers', authenticateUser, async (req, res) => {
+app.get('/phone-numbers', authenticateUser, async (req, res) => {
     try {
         const result = await pool.query(
             `SELECT * FROM phone_number_details WHERE user_id = $1 ORDER BY created_at DESC`,
@@ -358,7 +358,7 @@ app.get('/api/phone-numbers', authenticateUser, async (req, res) => {
 });
 
 // Get QR Code
-app.get('/api/phone-numbers/:id/qr', authenticateUser, async (req, res) => {
+app.get('/phone-numbers/:id/qr', authenticateUser, async (req, res) => {
     try {
         const result = await pool.query(
             `SELECT instance_name, token, server_instance, status, qr_code, qr_expires_at
@@ -428,7 +428,7 @@ app.get('/api/phone-numbers/:id/qr', authenticateUser, async (req, res) => {
 });
 
 // Get Status
-app.get('/api/phone-numbers/:id/status', authenticateUser, async (req, res) => {
+app.get('/phone-numbers/:id/status', authenticateUser, async (req, res) => {
     try {
         const result = await pool.query(
             `SELECT instance_name, server_instance, status, phone_number, last_connected_at
@@ -492,7 +492,7 @@ app.get('/api/phone-numbers/:id/status', authenticateUser, async (req, res) => {
 });
 
 // Delete Phone Number
-app.delete('/api/phone-numbers/:id', authenticateUser, async (req, res) => {
+app.delete('/phone-numbers/:id', authenticateUser, async (req, res) => {
     try {
         const result = await pool.query(
             `SELECT instance_name, server_instance FROM phone_numbers 
@@ -547,7 +547,7 @@ app.delete('/api/phone-numbers/:id', authenticateUser, async (req, res) => {
 // ========================================
 
 // Send Text Message
-app.post('/api/messages/send-text', authenticateUser, apiLimiter, async (req, res) => {
+app.post('/messages/send-text', authenticateUser, apiLimiter, async (req, res) => {
     const { token, number, text } = req.body;
     
     if (!token || !number || !text) {
@@ -623,7 +623,7 @@ app.post('/api/messages/send-text', authenticateUser, apiLimiter, async (req, re
 });
 
 // Send Media Message
-app.post('/api/messages/send-media', authenticateUser, apiLimiter, async (req, res) => {
+app.post('/messages/send-media', authenticateUser, apiLimiter, async (req, res) => {
     const { token, number, mediaUrl, caption, mediaType } = req.body;
     
     if (!token || !number || !mediaUrl) {
@@ -816,7 +816,7 @@ app.post('/webhook', async (req, res) => {
 // STATISTICS ENDPOINTS
 // ========================================
 
-app.get('/api/statistics', authenticateUser, async (req, res) => {
+app.get('/statistics', authenticateUser, async (req, res) => {
     const { phone_number_id, start_date, end_date, limit } = req.query;
     
     try {
@@ -888,7 +888,7 @@ app.get('/api/statistics', authenticateUser, async (req, res) => {
 });
 
 // Get Dashboard Summary
-app.get('/api/dashboard', authenticateUser, async (req, res) => {
+app.get('/dashboard', authenticateUser, async (req, res) => {
     try {
         const dashboard = await pool.query(
             'SELECT * FROM user_dashboard WHERE id = $1',
