@@ -1,6 +1,6 @@
 const EVOLUTION_SERVERS = [
-    'http://evolution-api-1:8080',
-    'http://evolution-api-2:8080'
+    'http://evolution-api-1:8080'
+    //'http://evolution-api-2:8080'
 ];
 
 let currentServerIndex = 0;
